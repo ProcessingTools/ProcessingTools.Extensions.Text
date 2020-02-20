@@ -24,6 +24,16 @@ namespace ProcessingTools.Extensions.Text
         public static readonly Regex MatchWhitespace = new Regex(@"\s+", RegexOptions.Compiled);
 
         /// <summary>
+        /// Match character.
+        /// </summary>
+        public static readonly Regex MatchCharacter = new Regex(@"\w+", RegexOptions.Compiled);
+
+        /// <summary>
+        /// Match non-character.
+        /// </summary>
+        public static readonly Regex MatchNonCharacter = new Regex(@"\W+", RegexOptions.Compiled);
+
+        /// <summary>
         /// Match new line symbols.
         /// </summary>
         public static readonly Regex MatchNewLine = new Regex(@"(\\r\\n|\r\n|\\r|\r|\\n|\n)", RegexOptions.Compiled);
