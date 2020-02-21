@@ -1,4 +1,4 @@
-﻿// <copyright file="LevenshteinDistanceIntegrationTests.cs" company="ProcessingTools">
+﻿// <copyright file="LevenshteinDistanceTests.cs" company="ProcessingTools">
 // Copyright (c) 2020 ProcessingTools. All rights reserved.
 // </copyright>
 
@@ -11,7 +11,7 @@ namespace ProcessingTools.Extensions.Text.Tests
     /// Levenshtein distance integration tests.
     /// </summary>
     [TestFixture(Category = "Integration", TestOf = typeof(LevenshteinDistance))]
-    public class LevenshteinDistanceIntegrationTests
+    public class LevenshteinDistanceTests
     {
         /// <summary>
         /// Levenshtein distance compute with valid strings should work.

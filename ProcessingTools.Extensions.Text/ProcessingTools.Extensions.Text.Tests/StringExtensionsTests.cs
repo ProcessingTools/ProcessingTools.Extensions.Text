@@ -1,4 +1,4 @@
-// <copyright file="ListIntersectionsExtensionsTests.cs" company="ProcessingTools">
+﻿// <copyright file="StringExtensionsTests.cs" company="ProcessingTools">
 // Copyright (c) 2020 ProcessingTools. All rights reserved.
 // </copyright>
 
@@ -6,13 +6,14 @@ namespace ProcessingTools.Extensions.Text.Tests
 {
     using System.Collections.Generic;
     using System.Linq;
+    using Moq;
     using NUnit.Framework;
 
     /// <summary>
-    /// List intersections extensions tests.
+    /// Tests for <see cref="StringExtensions"/>.
     /// </summary>
-    [TestFixture(Category = "Integration", TestOf = typeof(StringExtensions))]
-    public class ListIntersectionsExtensionsTests
+    [TestFixture(TestOf = typeof(StringExtensions), Category = "Integration")]
+    public class StringExtensionsTests
     {
         private static List<string> wordList;
 
@@ -27,6 +28,85 @@ namespace ProcessingTools.Extensions.Text.Tests
             wordList = words.ToList();
 
             TestContext.WriteLine(string.Join(", ", words));
+        }
+
+        /// <summary>
+        /// DistinctWithStopWords with valid parameters should return valid IEnumerable.
+        /// </summary>
+        [Test(TestOf = typeof(StringExtensions), Description = "DistinctWithStopWords with valid parameters should return valid IEnumerable")]
+        public void DistinctWithStopWords_WithValidParameters_ShouldReturnValidIEnumerable()
+        {
+            // Arrange
+            var stopWords = new List<string>
+            {
+                "item",
+            };
+
+            var words = new List<string>();
+
+            // Act
+            var result = words.DistinctWithStopWords(stopWords);
+
+            // Assert
+            Assert.IsNotNull(result);
+            Assert.AreNotSame(words, result);
+        }
+
+        /// <summary>
+        /// DistinctWithStopWords with empty stopWords should return input words.
+        /// </summary>
+        [Test(TestOf = typeof(StringExtensions), Description = "DistinctWithStopWords with empty stopWords should return input words")]
+        public void DistinctWithStopWords_WithEmptyStopWords_ShouldReturnInputWords()
+        {
+            // Arrange
+            var stopWords = new List<string>();
+
+            var words = new List<string>
+            {
+                "item1",
+            };
+
+            // Act
+            var result = words.DistinctWithStopWords(stopWords);
+
+            // Assert
+            Assert.IsNotNull(result);
+            Assert.AreSame(words, result);
+        }
+
+        /// <summary>
+        /// DistinctWithStopWords with null words should return valid IEnumerable.
+        /// </summary>
+        [Test(TestOf = typeof(StringExtensions), Description = "DistinctWithStopWords with null words should return valid IEnumerable")]
+        public void DistinctWithStopWords_WithNullWords_ShouldReturnValidIEnumerable()
+        {
+            // Arrange
+            var stopWordsMock = new Mock<IEnumerable<string>>();
+
+            // Act
+            var result = StringExtensions.DistinctWithStopWords(null, stopWordsMock.Object);
+
+            // Assert
+            Assert.IsNotNull(result);
+            stopWordsMock.Verify(s => s.GetEnumerator(), Times.Never);
+        }
+
+        /// <summary>
+        /// DistinctWithStopWords with null stopWords should return the original words.
+        /// </summary>
+        [Test(TestOf = typeof(StringExtensions), Description = "DistinctWithStopWords with null stopWords should return the original words")]
+        public void DistinctWithStopWords_WithNullStopWords_ShouldReturnTheOriginalWords()
+        {
+            // Arrange
+            var wordsMock = new Mock<IEnumerable<string>>();
+
+            // Act
+            var result = StringExtensions.DistinctWithStopWords(wordsMock.Object, null);
+
+            // Assert
+            Assert.IsNotNull(result);
+            Assert.AreSame(wordsMock.Object, result);
+            wordsMock.Verify(s => s.GetEnumerator(), Times.Never);
         }
 
         /// <summary>
