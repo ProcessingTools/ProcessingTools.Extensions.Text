@@ -12,7 +12,7 @@ namespace ProcessingTools.Extensions.Text.Tests
     /// <summary>
     /// Regex extensions tests.
     /// </summary>
-    [TestFixture(Author = "Bozhin Karaivanov", TestOf = typeof(RegexExtensions), Category = "Unit")]
+    [TestFixture(TestOf = typeof(RegexExtensions), Category = "Unit")]
     public class RegexExtensionsTests
     {
         /// <summary>
@@ -23,7 +23,7 @@ namespace ProcessingTools.Extensions.Text.Tests
         /// <summary>
         /// MatchWordsInString.AsEnumerable should return <see cref="IEnumerable{T}"/> of word strings.
         /// </summary>
-        [Test(Author = "Bozhin Karaivanov", TestOf = typeof(RegexExtensions), Description = "MatchWordsInString.AsEnumerable should return IEnumerable{T} of word strings")]
+        [Test(TestOf = typeof(RegexExtensions), Description = "MatchWordsInString.AsEnumerable should return IEnumerable{T} of word strings")]
         public void MatchWordsInString_AsEnumerable_ShouldReturnIEnumerableOfWordStrings()
         {
             // Arrange

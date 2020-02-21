@@ -10,13 +10,13 @@ namespace ProcessingTools.Extensions.Text.Tests
     /// <summary>
     /// Distinct with stop words integration tests.
     /// </summary>
-    [TestFixture(Author = "Bozhin Karaivanov", TestOf = typeof(StringExtensions), Category = "Integration")]
+    [TestFixture(TestOf = typeof(StringExtensions), Category = "Integration")]
     public class DistinctWithStopWordsIntegrationTests
     {
         /// <summary>
         /// DistinctWithStopWords with valid parameters should return valid IEnumerable.
         /// </summary>
-        [Test(Author = "Bozhin Karaivanov", TestOf = typeof(StringExtensions), Description = "DistinctWithStopWords with valid parameters should return valid IEnumerable")]
+        [Test(TestOf = typeof(StringExtensions), Description = "DistinctWithStopWords with valid parameters should return valid IEnumerable")]
         public void DistinctWithStopWords_WithValidParameters_ShouldReturnValidIEnumerable()
         {
             // Arrange
@@ -38,7 +38,7 @@ namespace ProcessingTools.Extensions.Text.Tests
         /// <summary>
         /// DistinctWithStopWords with empty stopWords should return input words.
         /// </summary>
-        [Test(Author = "Bozhin Karaivanov", TestOf = typeof(StringExtensions), Description = "DistinctWithStopWords with empty stopWords should return input words")]
+        [Test(TestOf = typeof(StringExtensions), Description = "DistinctWithStopWords with empty stopWords should return input words")]
         public void DistinctWithStopWords_WithEmptyStopWords_ShouldReturnInputWords()
         {
             // Arrange

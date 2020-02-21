@@ -473,5 +473,135 @@ namespace ProcessingTools.Extensions.Text
                 .Where(s => !string.IsNullOrWhiteSpace(s))
                 .Select(s => s.ToUpperInvariant()));
         }
+
+        /// <summary>
+        /// Gets all strings which does not contain any string of a comparison list.
+        /// </summary>
+        /// <param name="wordList">IEnumerable object to be distinct.</param>
+        /// <param name="compareList">IEnumerable object of patterns which must not be contained in the wordList.</param>
+        /// <param name="treatAsRegex">Treat compareList items as regex patterns or not.</param>
+        /// <param name="caseSensitive">Perform case-sensitive search or not.</param>
+        /// <param name="strictMode">Specify if whole-phrase-match is expected.</param>
+        /// <returns>IEnumerable object of all non-matching with compareList string items in wordList.</returns>
+        public static IEnumerable<string> DistinctWithStringList(
+            this IEnumerable<string> wordList,
+            IEnumerable<string> compareList,
+            bool treatAsRegex = false,
+            bool caseSensitive = false,
+            bool strictMode = false)
+        {
+            var list = new HashSet<string>(wordList);
+            var result = from word in list
+                         where !word.MatchWithStringList(compareList, treatAsRegex, caseSensitive, strictMode).Any()
+                         select word;
+
+            return new HashSet<string>(result);
+        }
+
+        /// <summary>
+        /// Gets all items of an IEnumerable object which are contained in the given string.
+        /// </summary>
+        /// <param name="word">The string which should contain some items of interest.</param>
+        /// <param name="compareList">IEnumerable object which items provides the output items.</param>
+        /// <param name="treatAsRegex">Treat compareList items as regex patterns or not.</param>
+        /// <param name="caseSensitive">Perform case-sensitive search or not.</param>
+        /// <param name="strictMode">Specify if whole-phrase-match is expected.</param>
+        /// <returns>IEnumerable object of all matching string items of compareList in word.</returns>
+        /// <remarks>If match-whole-word-search is needed treatAsRegex should be set to true, and values in compareList should be Regex.Escape-d if needed.</remarks>
+        public static IEnumerable<string> MatchWithStringList(
+            this string word,
+            IEnumerable<string> compareList,
+            bool treatAsRegex = false,
+            bool caseSensitive = false,
+            bool strictMode = false)
+        {
+            IEnumerable<string> result = null;
+
+            var list = new HashSet<string>(compareList);
+            if (strictMode)
+            {
+                if (treatAsRegex)
+                {
+                    if (caseSensitive)
+                    {
+                        result = list.Where(c => Regex.IsMatch(word, $"\\A{c}\\Z"));
+                    }
+                    else
+                    {
+                        result = list.Where(c => Regex.IsMatch(word, $"\\A(?i){c}\\Z"));
+                    }
+                }
+                else
+                {
+                    if (caseSensitive)
+                    {
+                        result = list.Where(c => string.Equals(word, c, StringComparison.InvariantCulture));
+                    }
+                    else
+                    {
+                        result = list.Where(c => string.Equals(word, c, StringComparison.InvariantCultureIgnoreCase));
+                    }
+                }
+            }
+            else
+            {
+                if (treatAsRegex)
+                {
+                    if (caseSensitive)
+                    {
+                        result = from comparePattern in list
+                                 where Regex.IsMatch(word, @"\b" + comparePattern + @"\b")
+                                 select comparePattern;
+                    }
+                    else
+                    {
+                        result = from comparePattern in list
+                                 where Regex.IsMatch(word, @"\b(?i)" + comparePattern + @"\b")
+                                 select comparePattern;
+                    }
+                }
+                else
+                {
+                    if (caseSensitive)
+                    {
+                        result = from stringToCompare in list
+                                 where word.Contains(stringToCompare, StringComparison.InvariantCulture)
+                                 select stringToCompare;
+                    }
+                    else
+                    {
+                        result = from stringToCompare in list
+                                 where word.Contains(stringToCompare, StringComparison.InvariantCultureIgnoreCase)
+                                 select stringToCompare;
+                    }
+                }
+            }
+
+            return new HashSet<string>(result);
+        }
+
+        /// <summary>
+        /// Gets all strings which contains any string of a comparison list.
+        /// </summary>
+        /// <param name="wordList">IEnumerable object to be matches.</param>
+        /// <param name="compareList">IEnumerable object of patterns which must be contained in the wordList.</param>
+        /// <param name="treatAsRegex">Treat compareList items as regex patterns or not.</param>
+        /// <param name="caseSensitive">Perform case-sensitive search or not.</param>
+        /// <param name="strictMode">Specify if whole-phrase-match is expected.</param>
+        /// <returns>IEnumerable object of all matching with compareList string items in wordList.</returns>
+        public static IEnumerable<string> MatchWithStringList(
+            this IEnumerable<string> wordList,
+            IEnumerable<string> compareList,
+            bool treatAsRegex = false,
+            bool caseSensitive = false,
+            bool strictMode = false)
+        {
+            var list = new HashSet<string>(compareList);
+            var result = from word in wordList
+                         where word.MatchWithStringList(list, treatAsRegex, caseSensitive, strictMode).Any()
+                         select word;
+
+            return new HashSet<string>(result);
+        }
     }
 }
