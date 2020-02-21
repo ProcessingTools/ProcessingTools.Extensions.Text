@@ -21,7 +21,7 @@
 
     <PackageTags>text, extensions, tests</PackageTags>
 
-    <Version>0.1.5</Version>
+    <Version>0.1.6</Version>
 
     <Copyright>Copyright © 2020 ProcessingTools</Copyright>
   </PropertyGroup>
